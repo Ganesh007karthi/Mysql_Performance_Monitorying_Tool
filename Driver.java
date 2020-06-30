@@ -74,3 +74,5 @@ public class Driver {
 
     }
 }
+//command to execute this program
+//    bash slowquerylog.sh  -f /home/ganesh/Documents/slowlog.log -l 3
