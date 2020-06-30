@@ -63,12 +63,12 @@ public class Driver {
             //file
             //limit        user defined
             System.out.println("Operation with file name and limit");
-            data = SlowLogOperator.readFileWithLimit(file_name);
+            data = SlowLogOperator.readFileWithEndDate(file_name,end_date);
             SlowLogOperator.writeFile(data,limit);
         }else if(file_name !=null&& start_date ==null&& end_date ==null&&limit==null){
             //file            default limit
             System.out.println("Operation with file name and default limit");
-            data = SlowLogOperator.readFileWithLimit(file_name);
+            data = SlowLogOperator.readFileWithEndDate(file_name,end_date);
             SlowLogOperator.writeFile(data,limit);
         }
 

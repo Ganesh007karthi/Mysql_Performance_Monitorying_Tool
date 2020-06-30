@@ -99,7 +99,13 @@ public class SlowLogOperator {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
             SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            Date end_date = SDF.parse(EndTime);
+            Date end_date;
+            if(EndTime!=null){
+                end_date = SDF.parse(EndTime);
+            }else{
+                 end_date = new Date();
+            }
+
             strLine =br.readLine();
             int count =0;
             int count1 =0;
@@ -164,73 +170,6 @@ public class SlowLogOperator {
             System.out.println(e);
         }
 
-        return data;
-    }
-
-    public static TreeMap<Integer,SlowQueryLog> readFileWithLimit(String file){
-        try{
-            FileInputStream fs = new FileInputStream(file);
-            BufferedReader br = new BufferedReader(new InputStreamReader(fs));
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-            strLine =br.readLine();
-            int count1 =0;
-            while (true){
-                if(strLine.startsWith("# Time:")){
-                    String[] words = strLine.split("\\s");
-                    String time = words[2];
-                    Date CurrentTime = formatter.parse(time);
-
-
-                        count1++;
-                        strLine =br.readLine();
-                        strLine =br.readLine();
-                        words = strLine.split("\\s");
-                        String query_time= words[2];
-                        String Lock_time= words[5];
-                        String rows_sent = words[7];
-                        String rows_examined = words[10];
-                        SlowQueryLog log = new SlowQueryLog();
-                        log.setTime(time);
-                        log.setQuery_time(query_time);
-                        log.setLock_time(Lock_time);
-                        log.setRows_sent(rows_sent);
-                        log.setRows_examined(rows_examined);
-                        ArrayList<String> querylist = new ArrayList<>();
-                        strLine =br.readLine();
-                        isChecked =false;
-                        while(true){
-                            if(strLine.contains("# Time:")){
-                                isChecked =true;
-                                break;
-                            }
-                            else{
-                                querylist.add(strLine);
-
-                            }
-                            strLine =br.readLine();
-                            if(strLine ==null){
-                                break;
-                            }
-                        }
-                        log.setQueries(querylist);
-                        data.put(count1,log);
-
-                }
-                if(!isChecked){
-                    strLine =br.readLine();
-                }
-                if(strLine ==null){
-                    break;
-                }
-            }
-            fs.close();
-            System.out.println("if loop iteration:"+count1);
-            System.out.println("data map size: "+data.size());
-            return data;
-        }catch (Exception e){
-            System.out.println(e);
-        }
         return data;
     }
 
