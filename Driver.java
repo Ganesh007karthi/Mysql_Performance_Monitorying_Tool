@@ -1,8 +1,9 @@
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.TreeMap;
+import java.util.GregorianCalendar;
 
 public class Driver {
 
@@ -33,61 +34,50 @@ public class Driver {
         System.out.println("end date :"+end_date);
         System.out.println("filename :"+file_name);
         System.out.println("limit:"+limit);
+        SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-
-        if(start_date!=null){
-            try{
-                SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        try{
+            if(start_date!=null&&end_date==null){
                 startDate = SDF.parse(start_date);
-            }catch (Exception e){
-                System.out.println(e);
-            }
-            if(end_date==null){
-                endDate = new Date();
-                useLimit = true;
-                if(limit!=null){
-                    queryLimit=Integer.parseInt(limit);
+                endDate = DateAction(startDate,1,true);
+            }else{
+                if(end_date==null){
+                    endDate = new Date();
+
                 }else{
-                    queryLimit=10;
-                }
-            }else{
-                try{
-                    SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                     endDate= SDF.parse(end_date);
-//                     startDate = SDF.parse(start_date);
-                }catch (Exception e){
-                    System.out.println(e);
-                }
-            }
-            SlowLogOperator.readFileWithStartDate(file_name,startDate,endDate,queryLimit,useLimit);
-        }
-
-        if(start_date==null){
-            System.out.println("Startdate null loop");
-            if(end_date==null){
-                endDate = new Date();
-
-            }else{
-                try{
-                    SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                     endDate= SDF.parse(end_date);
-                }catch (Exception e){
-                    System.out.println(e);
+                }
+                if(start_date==null){
+                    startDate = DateAction(endDate,1,false);
+                }else if(start_date!=null){
+                    startDate = SDF.parse(start_date);
                 }
             }
+
             if(limit!=null){
+                useLimit = true;
                 queryLimit=Integer.parseInt(limit);
             }else{
-                queryLimit=10;
+                useLimit=false;
             }
-            data=SlowLogOperator.readFileWithEndDate(file_name,endDate);
-            SlowLogOperator.writeFile(data,queryLimit);
+            SlowLogOperator.readAndWriteFile(file_name,startDate,endDate,queryLimit,useLimit);
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
+    public static Date DateAction(Date date, int days,Boolean add) {
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        if(add){
+            cal.add(Calendar.DATE, days);
+        }else{
+            cal.add(Calendar.DATE, -days);
         }
 
-
-
-
+        return cal.getTime();
     }
+
 }
 //command to execute this program
 //    bash slowquerylog.sh  -f /home/ganesh/Documents/slowlog.log -l 3
