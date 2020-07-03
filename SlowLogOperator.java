@@ -1,8 +1,13 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class SlowLogOperator {
-    public static void operator(String file, Date start_date, Date end_date, String limit){
+    public static void operate(String file, Date start_date, Date end_date, String limit){
         String strLine;
         Boolean isChecked =false;
         int query_limit=0;
@@ -11,13 +16,12 @@ public class SlowLogOperator {
         }
         String s;
             try{
-                FileInputStream fs = new FileInputStream(file);
-                BufferedReader br = new BufferedReader(new InputStreamReader(fs));
-                FileWriter Bw =new FileWriter("/home/ganesh/test.txt");
+                FileInputStream fileInputStream = new FileInputStream(file);
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+                FileWriter fileWriter =new FileWriter("/home/ganesh/test.txt");
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-                strLine =br.readLine();
-                int count =0;
+                strLine =bufferedReader.readLine();
                 int count1 =0;
                 System.out.println("inside startdate method");
                 System.out.println(start_date);
@@ -27,25 +31,24 @@ public class SlowLogOperator {
                         String[] words = strLine.split("\\s");
                         String time = words[2];
                         Date CurrentTime = formatter.parse(time);
-                        count++;
                         if(((start_date.compareTo(CurrentTime)<=0))&&((end_date.compareTo(CurrentTime)>=0))){
                             count1++;
                             s="\n\n"+count1;
-                            Bw.write(s);
-                            strLine =br.readLine();
-                            strLine =br.readLine();
+                            fileWriter.write(s);
+                            strLine =bufferedReader.readLine();
+                            strLine =bufferedReader.readLine();
                             words = strLine.split("\\s");
                             String query_time= words[2];
                             String Lock_time= words[5];
                             String rows_sent = words[7];
                             String rows_examined = words[10];
                             s ="\nTime = "+time;
-                            Bw.write(s);
+                            fileWriter.write(s);
                             s="\nQuery Time = "+query_time+"  Lock Time = "+Lock_time+" Rows Sent = "+rows_sent+" Rows Examined = "+rows_examined;
-                            Bw.write(s);
+                            fileWriter.write(s);
                             s="\nQuery Executed :\n";
-                            Bw.write(s);
-                            strLine =br.readLine();
+                            fileWriter.write(s);
+                            strLine =bufferedReader.readLine();
                             isChecked =false;
                             while(true){
                                 if(strLine.contains("# Time:")){
@@ -53,10 +56,10 @@ public class SlowLogOperator {
                                     break;
                                 }
                                 else{
-                                    Bw.write(strLine+"\n");
+                                    fileWriter.write(strLine+"\n");
 
                                 }
-                                strLine =br.readLine();
+                                strLine =bufferedReader.readLine();
                                 if(strLine ==null){
                                     break;
                                 }
@@ -72,14 +75,14 @@ public class SlowLogOperator {
                         }
                     }
                     if(!isChecked){
-                        strLine =br.readLine();
+                        strLine =bufferedReader.readLine();
                     }
                     if(strLine ==null){
                         break;
                     }
                 }
-                fs.close();
-                Bw.close();
+                fileInputStream.close();
+                fileWriter.close();
             }catch (Exception e){
                 System.out.println(e);
             }
