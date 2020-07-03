@@ -9,7 +9,7 @@ import java.util.TimeZone;
 public class SlowLogOperator {
     public static void operate(String file, Date start_date, Date end_date, String limit){
         String strLine;
-        Boolean isChecked =false;
+        boolean isChecked =false;
         int query_limit=0;
         if (limit != null) {
             query_limit = Integer.parseInt(limit);
@@ -23,7 +23,7 @@ public class SlowLogOperator {
                 formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
                 strLine =bufferedReader.readLine();
                 int count1 =0;
-                System.out.println("inside startdate method");
+                System.out.println("inside start date method");
                 System.out.println(start_date);
                 System.out.println(end_date);
                 while (true){
@@ -35,7 +35,7 @@ public class SlowLogOperator {
                             count1++;
                             s="\n\n"+count1;
                             fileWriter.write(s);
-                            strLine =bufferedReader.readLine();
+                            bufferedReader.readLine();
                             strLine =bufferedReader.readLine();
                             words = strLine.split("\\s");
                             String query_time= words[2];
@@ -83,8 +83,8 @@ public class SlowLogOperator {
                 }
                 fileInputStream.close();
                 fileWriter.close();
-            }catch (Exception e){
-                System.out.println(e);
+            }catch (Exception exception){
+                System.out.println(exception);
             }
     }
 }

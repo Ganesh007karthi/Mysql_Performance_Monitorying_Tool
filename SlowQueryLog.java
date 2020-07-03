@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class SlowQueryLog {
     String time,query_time,lock_time,rows_sent,rows_examined;

@@ -60,7 +60,7 @@ public class Driver {
 
     }
 
-    public static Date dateAction(Date date, Boolean add) {
+    public static void dateAction(Date date, Boolean add) {
 
         long millis;
         if (add) {
@@ -70,8 +70,6 @@ public class Driver {
         }
         date.setTime(millis);
 
-        return date;
     }
 }
-//command to execute this program
-//    bash slowquerylog.sh  -f /home/ganesh/Documents/slowlog.log -l 3
+
