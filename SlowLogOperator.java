@@ -2,13 +2,13 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 public class SlowLogOperator {
-
-
-
-    public static void readAndWriteFile(String file, Date start_date, Date end_date,int query_limit,boolean useLimit){
+    public static void operator(String file, Date start_date, Date end_date, String limit){
         String strLine;
         Boolean isChecked =false;
-        System.out.println(useLimit);
+        int query_limit=0;
+        if (limit != null) {
+            query_limit = Integer.parseInt(limit);
+        }
         String s;
             try{
                 FileInputStream fs = new FileInputStream(file);
@@ -62,8 +62,7 @@ public class SlowLogOperator {
                                 }
                             }
                         }
-
-                        if(useLimit){
+                        if(limit!=null){
                             if(count1>=query_limit){
                                 break;
                             }
@@ -84,7 +83,5 @@ public class SlowLogOperator {
             }catch (Exception e){
                 System.out.println(e);
             }
-
     }
-
 }
