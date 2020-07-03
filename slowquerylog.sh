@@ -31,9 +31,9 @@ then
 
 fi
 
-if [ ! -z "$filename" ] && [ ! -z "$startdate" ] && [ ! -z "$enddate" ]
+if [ ! -z "$filename" ] && [ ! -z "$startdate" ] && [ ! -z "$enddate" ] && [ ! -z "$limit" ]
 then
-  javac -cp .:$dir $dir/$class_name.java  && java -cp .:$dir $class_name $filename $startdate $enddate
+  javac -cp .:$dir $dir/$class_name.java  && java -cp .:$dir $class_name $filename $startdate $enddate $limit
 elif [ ! -z "$filename" ] && [ ! -z "$startdate" ] && [ -z "$enddate" ] && [ -z "$limit" ]
 then
   javac -cp .:$dir $dir/$class_name.java  && java -cp .:$dir $class_name $filename $startdate 
@@ -53,7 +53,9 @@ then
 elif [ ! -z "$filename" ] && [ -z "$startdate" ] && [ -z "$enddate" ] && [ ! -z "$limit" ]
 then 
   javac -cp .:$dir $dir/$class_name.java  && java -cp .:$dir $class_name $filename $limit
+elif [ ! -z "$filename" ] && [ ! -z "$startdate" ] && [ ! -z "$enddate" ] 
+then
+  javac -cp .:$dir $dir/$class_name.java  && java -cp .:$dir $class_name $filename $startdate $enddate 
 fi
   
-
 
