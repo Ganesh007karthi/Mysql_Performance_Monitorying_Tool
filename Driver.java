@@ -51,7 +51,7 @@ public class Driver {
             System.out.println(startDate);
             System.out.println(endDate);
             SlowLogOperator.operator(file_name, startDate, endDate, limit);
-            Thread.sleep(30000);
+//            Thread.sleep(30000);
 //System.out.println(endDate);
         } catch (Exception e) {
             System.out.println(e);
